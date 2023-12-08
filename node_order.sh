@@ -27,6 +27,7 @@
 #         2.4 - 12/6/2023  - mcginnis - Fixed "THISNODE" processing.
 #         2.4 - 12/6/2023  - mcginnis - Clarified primary master as being the last master to list but NOT the last node.
 #         2.4 - 12/6/2023  - mcginnis - Modified role to include all node labels
+#         2.4 - 12/6/2023  - mcginnis - Modified "-" in role names to "_" to match bash variable naming rules.
 #
 
 if [ "$1" = "-h" ]; then
@@ -92,6 +93,7 @@ do
    test "$VERBOSE" = "1" && echo "node:$NODENAME"
    ROLE=`echo ${noderec/,/ }|awk '{print $2}'`
    ROLE="${ROLE//,/_}"
+   ROLE="${ROLE//-/_}"
    test "$VERBOSE" = "1" && echo "$NODENAME $ROLE"
    if [ "${NODENAME/.*}" = "$THISHOST" ]; then
       THISNODE="$NODENAME"
