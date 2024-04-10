@@ -27,7 +27,7 @@
 #         2.4 - 12/6/2023  - mcginnis - Fixed "THISNODE" processing.
 #         2.4 - 12/6/2023  - mcginnis - Clarified primary master as being the last master to list but NOT the last node.
 #         2.4 - 12/6/2023  - mcginnis - Modified role to include all node labels
-#         2.4 - 12/6/2023  - mcginnis - Modified "-" in role names to "_" to match bash variable naming rules.
+#         2.4 - 12/8/2023  - mcginnis - Modified "-" in role names to "_" to match bash variable naming rules.
 #         2.5 - 12/18/2023 - mcginnis - Fixed ROLE list management when a role name can be part of another in regex
 #
 
