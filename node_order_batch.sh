@@ -61,13 +61,14 @@ echo "# ==========================="
 echo "# nodelist: batch=$batch `echo "${nodelist[$batch]}"|wc -l`"
 echo "${nodelist[$batch]}" | while read nodeent
 do
-   echo "$batch: $nodeent"
+   echo "$batch $nodeent"
 done
 }
 
 # MAIN
 batch_nodes
 
+# Mix node batches from top to bottom and from bottom to top
 top=1
 bottom=$batchcount
 while [ $bottom -ge $top ]
