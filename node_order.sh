@@ -114,6 +114,7 @@ if [ "${NODEROLES/ master }" != "$NODEROLES" ]; then
 fi
 NODEROLES=${NODEROLES//  / }
 
+
 # Locate the largest group of nodes with same "ROLE" ======================
 #echo "NODEROLES:$NODEROLES"
 ROLE_X=0 # Number of nodes in the largest group
