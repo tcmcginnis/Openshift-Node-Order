@@ -71,8 +71,7 @@ else
    NODES="`$KUBECMD get nodes --no-headers|awk '{print $1","$3}'|egrep -ve "($EXCLUDELIST)"`"
 fi
 
-
-# Compute the number of beginning node number and ending node number.
+# Compute the beginning node number and ending node number.
 # This code was developed to enable segmentation (like day3of4)   
 nodecount=`echo "$NODES"|wc -l`
 let SPLIT_SEG_SIZE=nodecount/SPLIT_TOTAL
@@ -111,6 +110,14 @@ done
 # Force the master role to be last in the list
 if [ "${NODEROLES/ master }" != "$NODEROLES" ]; then
    NODEROLES="${NODEROLES/ master} master"
+else
+   for role in $NODEROLES
+   do
+      if [ "$role" = "master" -o "${role/_master}" != "$role" ]; then
+         NODEROLES="${NODEROLES/ $role} $role"
+         break
+      fi
+   done
 fi
 NODEROLES=${NODEROLES//  / }
 
@@ -185,7 +192,7 @@ do
    done
 done
 
-# Save this node for last section
+# Save this node (AKA "$THISNODE") for last section
 if [ "$THISNODE" != "" -a $SPLIT_SECTION -eq $SPLIT_TOTAL ]; then
    getfqdn $THISNODE
    echo -e "$THISNODE\t$NODEFQDN\t$THISROLE"

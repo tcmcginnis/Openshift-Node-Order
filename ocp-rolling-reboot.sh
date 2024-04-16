@@ -5,9 +5,10 @@
 #
 # T.McGinnis 12/2023
 #
-#set -x
+set -x
  
 initial_wait_interval="45"
+initial_wait_interval="4"
 ping_after_reboot_threshold="120"       # Number of seconds to wait for a ping after rebooting the node.  Alert when this is exceeded.
  
 SCRIPT_DIR="$(dirname $0)"
@@ -36,11 +37,12 @@ if [ "${ans^^}" != "Y" ]; then
 fi
  
 function waitforready {
+echo "WaitForReady"
 while [ "$(oc get node $nodename --no-headers=true|grep -v " Ready ")" != "" ]
 do
    oc get node $nodename
    sleep 5
-   ping -c 1 $nodename >/dev/null 2>&1
+   ping -c 1 $nodedns >/dev/null 2>&1
    if [ $? -ne 0 ]; then
       CURRENT_TIME=`date +%s`
       let ping_delay=CURRENT_TIME-SHUTDOWN_TIME
@@ -51,11 +53,11 @@ do
 done
 }
  
-NODELIST="$($SCRIPT_DIR/node_order.sh|awk '{print $2}')"
+NODELIST="$($SCRIPT_DIR/node_order.sh)"
 echo "NODELIST:$NODELIST"
-#for nodename in $(oc get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="Hostname")].address}')
-for nodename in $NODELIST
+while read nodename nodedns noderole
 do
+echo "node:$nodename dns:$nodedns role:$noderole"
    if [ "$RESTART" = "Y" ]; then
       if [ "$nodename" = "$RESTART_AT_NODE" ]; then
          RESTART="N"
@@ -63,10 +65,10 @@ do
       continue
    fi
    echo "rebooting node $nodename"
-   #sudo ssh -o StrictHostKeyChecking=no core@$nodename sudo shutdown -r 0
+   #sudo ssh -o StrictHostKeyChecking=no core@$nodedns sudo shutdown -r 0
    if [ $? -ne 0 ]; then
       echo ""
-      echo "ERROR!!!!!!    Failed to initiate node shutdown for $nodename."
+      echo "ERROR!!!!!!    Failed to initiate node shutdown for $nodedns."
       echo ""
       read -p "  Press \"Y\" to continue or ctrl-c to abort: " ans
       if [ "${ans^^}" != "Y" ]; then
@@ -79,4 +81,4 @@ do
    sleep $initial_wait_interval
    waitforready
    oc get node $nodename
-done
+done <<< $(echo "$NODELIST"|grep -v "^#"; echo "**END**")
