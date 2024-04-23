@@ -1,9 +1,24 @@
+#!/bin/bash
+if [ "$1" = "batch" ]; then
+   CLUSTER_NODES="$(./node_order_batch.sh)"
+else
+   CLUSTER_NODES="$(./node_order.sh)"
+fi
+
+function perform_reboots {
+echo "$NODELIST" | while read node dns role
+do
+   echo "node:$node dns:$dns role:$role"
+done
+echo "======================================"
+}
 while read batch nodeentry
 do
    if [ "$batch" != "$lastbatch" -a "$batch" != "" ]; then
       if [ "$lastbatch" != "" ]; then
-         echo "Batch:$lastbatch"
-         echo "$NODELIST"
+         #echo "Batch:$lastbatch"
+         #echo "$NODELIST"
+         perform_reboots
       fi
       lastbatch="$batch"
       NODELIST="$nodeentry"
@@ -11,8 +26,11 @@ do
       NODELIST="$NODELIST
 $nodeentry"
    fi
-done <<< $(./node_order_batch.sh|grep -v "^#"; echo "**END**")
+done <<< $(echo "$CLUSTER_NODES"|grep -v "^#"; echo "**END**")
+#done <<< $(./node_order.sh|grep -v "^#"; echo "**END**")
+#done <<< $(./node_order_batch.sh|grep -v "^#"; echo "**END**")
 
+exit
 ##########################################################################################################################
 
 #!/bin/bash

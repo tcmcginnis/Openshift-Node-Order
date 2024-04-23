@@ -163,9 +163,9 @@ function getnode {
       fi
       eval "NODE_$ROLEOPT=\"$NODELIST\""
       #echo "ROLE:$ROLEOPT NODE:$NODE NODELIST:$NODELIST<"
-      let node_num=node_num+1
+      ((node_num++))
       if [ $node_num -ge $SPLIT_START -a $node_num -le $SPLIT_END ]; then
-         echo -e "$NODE\t$NODEFQDN\t$ROLEOPT"
+         echo -e "$node_num\t$NODE\t$NODEFQDN\t$ROLEOPT"
       fi
    fi
 }  
@@ -173,6 +173,7 @@ function getnode {
 # -main loop-
 test "$VERBOSE" = "1" && echo "Node Roles:$NODEROLES"
 node_num=0
+BATCH=1
 while [ "$NODEROLES" != "" ]
 do
    for ROLE in $NODEROLES
