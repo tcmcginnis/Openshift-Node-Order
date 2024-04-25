@@ -4,7 +4,7 @@
 #
 
 NODELIMIT=3
-NODES=$(./node_order.sh|cut -c2-|xargs -l1 echo)
+NODES=$(./node_order.sh|cut -f2-)
 #NODES=$(cat bb)
 #echo "$NODES"
 #echo "==========================="
