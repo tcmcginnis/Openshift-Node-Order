@@ -4,8 +4,8 @@
 #
 
 NODELIMIT=3
-NODES=$(./node_order.sh)
-NODES=$(cat bb)
+NODES=$(./node_order.sh|cut -c2-|xargs -l1 echo)
+#NODES=$(cat bb)
 #echo "$NODES"
 #echo "==========================="
 function batch_nodes {

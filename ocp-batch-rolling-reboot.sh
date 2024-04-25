@@ -2,15 +2,16 @@
 if [ "$1" = "batch" ]; then
    CLUSTER_NODES="$(./node_order_batch.sh)"
 else
-   CLUSTER_NODES="$(./node_order.sh)"
+   CLUSTER_NODES=$(./node_order.sh)
 fi
+echo "$CLUSTER_NODES"
 
 function perform_reboots {
+echo "==== $lastbatch ============================"
 echo "$NODELIST" | while read node dns role
 do
    echo "node:$node dns:$dns role:$role"
 done
-echo "======================================"
 }
 while read batch nodeentry
 do

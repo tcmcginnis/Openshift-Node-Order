@@ -166,6 +166,7 @@ function getnode {
       ((node_num++))
       if [ $node_num -ge $SPLIT_START -a $node_num -le $SPLIT_END ]; then
          echo -e "$node_num\t$NODE\t$NODEFQDN\t$ROLEOPT"
+         #echo -e "$NODE\t$NODEFQDN\t$ROLEOPT"
       fi
    fi
 }  
