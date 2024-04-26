@@ -5,9 +5,6 @@
 
 NODELIMIT=3
 NODES=$(./node_order.sh|cut -f2-)
-#NODES=$(cat bb)
-#echo "$NODES"
-#echo "==========================="
 function batch_nodes {
 batch=0
 while [ "$NODES" != "" ]

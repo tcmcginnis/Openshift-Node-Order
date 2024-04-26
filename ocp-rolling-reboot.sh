@@ -5,7 +5,7 @@
 #
 # T.McGinnis 12/2023
 #
-set -x
+#set -x
  
 initial_wait_interval="45"
 initial_wait_interval="4"
@@ -53,7 +53,7 @@ do
 done
 }
  
-NODELIST="$($SCRIPT_DIR/node_order.sh)"
+NODELIST="$($SCRIPT_DIR/node_order.sh|cut -f2-)"
 echo "NODELIST:$NODELIST"
 while read nodename nodedns noderole
 do
